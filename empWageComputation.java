@@ -67,11 +67,14 @@ public class EmpWageComputation {
                 return;
         }
 
-        // Variables to track total hours worked and days worked
+        // Variables to track total hours worked, days worked, and daily wages
         int totalHoursWorked = 0;
         int totalDaysWorked = 0;
         int dailyWorkHours = getWorkHours(type);
         int totalWage = 0;
+
+        // Array to store daily wages
+        int[] dailyWages = new int[MAX_WORKING_DAYS];
 
         // Loop to simulate working days until the conditions are met
         for (int day = 1; day <= MAX_WORKING_DAYS; day++) {
@@ -85,13 +88,18 @@ public class EmpWageComputation {
 
             if (isPresent) {
                 int dailyWage = calculateDailyWage(dailyWorkHours, type);
+                dailyWages[totalDaysWorked] = dailyWage;  // Store daily wage
                 totalWage += dailyWage;
                 totalHoursWorked += dailyWorkHours;
                 totalDaysWorked++;
             }
         }
 
-        // Display the results
+        // Display daily wages and the results
+        System.out.println("\nDaily Wage Breakdown:");
+        for (int i = 0; i < totalDaysWorked; i++) {
+            System.out.printf("Day %d: $%d\n", i + 1, dailyWages[i]);
+        }
         System.out.println("\nTotal Wage for the month is: $" + totalWage);
         System.out.println("Total Working Hours: " + totalHoursWorked);
         System.out.println("Total Working Days: " + totalDaysWorked);
