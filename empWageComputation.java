@@ -64,8 +64,7 @@ public class EmpWageComputation {
         System.out.println("\nTotal Wage for the week is: $" + weeklyWage);
 
         // Close the scanner
-        scanner.close();
-    }
+        scanner.close();}
 }
 
 
