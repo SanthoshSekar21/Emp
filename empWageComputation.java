@@ -6,8 +6,6 @@ public class EmpWageComputation {
     // Constants
     private static final int FULL_TIME_WAGE_PER_HOUR = 20;  // Wage per hour for full-time employees
     private static final int PART_TIME_WAGE_PER_HOUR = 15;  // Wage per hour for part-time employees
-    private static final int FULL_TIME_WORK_HOURS = 8;       // Full-time work hours per day
-    private static final int PART_TIME_WORK_HOURS = 4;       // Part-time work hours per day
     private static final int MAX_WORKING_HOURS = 100;        // Maximum working hours in a month
     private static final int MAX_WORKING_DAYS = 20;          // Maximum working days in a month
 
@@ -15,6 +13,18 @@ public class EmpWageComputation {
     private enum EmployeeType {
         FULL_TIME,
         PART_TIME
+    }
+
+    // Function to get daily work hours based on employee type
+    private static int getWorkHours(EmployeeType type) {
+        switch (type) {
+            case FULL_TIME:
+                return 8;  // Full-time work hours per day
+            case PART_TIME:
+                return 4;  // Part-time work hours per day
+            default:
+                throw new IllegalArgumentException("Invalid employee type");
+        }
     }
 
     // Function to calculate daily wage
@@ -60,7 +70,7 @@ public class EmpWageComputation {
         // Variables to track total hours worked and days worked
         int totalHoursWorked = 0;
         int totalDaysWorked = 0;
-        int dailyWorkHours = (type == EmployeeType.FULL_TIME) ? FULL_TIME_WORK_HOURS : PART_TIME_WORK_HOURS;
+        int dailyWorkHours = getWorkHours(type);
         int totalWage = 0;
 
         // Loop to simulate working days until the conditions are met
