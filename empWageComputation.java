@@ -9,19 +9,45 @@ public class EmpWageComputation {
     private static final int FULL_TIME_WORK_HOURS = 8;       // Full-time work hours per day
     private static final int PART_TIME_WORK_HOURS = 4;       // Part-time work hours per day
 
+    // Enum for Employee Type
+    private enum EmployeeType {
+        FULL_TIME,
+        PART_TIME
+    }
+
     // Function to calculate daily wage
-    private static int calculateDailyWage(int hoursWorked, boolean isFullTime) {
-        int wagePerHour = isFullTime ? FULL_TIME_WAGE_PER_HOUR : PART_TIME_WAGE_PER_HOUR;
+    private static int calculateDailyWage(int hoursWorked, EmployeeType type) {
+        int wagePerHour;
+        switch (type) {
+            case FULL_TIME:
+                wagePerHour = FULL_TIME_WAGE_PER_HOUR;
+                break;
+            case PART_TIME:
+                wagePerHour = PART_TIME_WAGE_PER_HOUR;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid employee type");
+        }
         return hoursWorked * wagePerHour;
     }
 
     // Function to calculate total weekly wage based on attendance
-    private static int calculateWeeklyWage(boolean[] attendance, boolean isFullTime) {
+    private static int calculateWeeklyWage(boolean[] attendance, EmployeeType type) {
         int totalWage = 0;
-        int dailyWorkHours = isFullTime ? FULL_TIME_WORK_HOURS : PART_TIME_WORK_HOURS;
+        int dailyWorkHours;
+        switch (type) {
+            case FULL_TIME:
+                dailyWorkHours = FULL_TIME_WORK_HOURS;
+                break;
+            case PART_TIME:
+                dailyWorkHours = PART_TIME_WORK_HOURS;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid employee type");
+        }
         for (boolean present : attendance) {
             if (present) {
-                totalWage += calculateDailyWage(dailyWorkHours, isFullTime);
+                totalWage += calculateDailyWage(dailyWorkHours, type);
             }
         }
         return totalWage;
@@ -45,26 +71,41 @@ public class EmpWageComputation {
         }
 
         // Read employee type
-        System.out.println("Is the employee full-time? (true/false):");
-        boolean isFullTime = scanner.nextBoolean();
+        System.out.println("Enter employee type (1 for Full-Time, 2 for Part-Time):");
+        int typeInput = scanner.nextInt();
+        EmployeeType type;
+        switch (typeInput) {
+            case 1:
+                type = EmployeeType.FULL_TIME;
+                break;
+            case 2:
+                type = EmployeeType.PART_TIME;
+                break;
+            default:
+                System.out.println("Invalid input for employee type.");
+                scanner.close();
+                return;
+        }
 
         // Display daily wage for each day
         System.out.println("\nDaily Wage Breakdown:");
-        int dailyWorkHours = isFullTime ? FULL_TIME_WORK_HOURS : PART_TIME_WORK_HOURS;
+        int dailyWorkHours = (type == EmployeeType.FULL_TIME) ? FULL_TIME_WORK_HOURS : PART_TIME_WORK_HOURS;
         for (int i = 0; i < attendance.length; i++) {
             if (attendance[i]) {
-                System.out.printf("Day %d: $%d\n", i + 1, calculateDailyWage(dailyWorkHours, isFullTime));
+                System.out.printf("Day %d: $%d\n", i + 1, calculateDailyWage(dailyWorkHours, type));
             } else {
                 System.out.printf("Day %d: Absent\n", i + 1);
             }
         }
 
         // Calculate and display the total weekly wage
-        int weeklyWage = calculateWeeklyWage(attendance, isFullTime);
+        int weeklyWage = calculateWeeklyWage(attendance, type);
         System.out.println("\nTotal Wage for the week is: $" + weeklyWage);
 
         // Close the scanner
-        scanner.close();}
+        scanner.close();
+    }
 }
+
 
 
