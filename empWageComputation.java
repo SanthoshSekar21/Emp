@@ -4,20 +4,24 @@ import java.util.Scanner;
 public class EmpWageComputation {
 
     // Constants
-    private static final int WAGE_PER_HOUR = 20;  // Example wage per hour
-    private static final int DAILY_WORK_HOURS = 8; // Hours worked per day
+    private static final int FULL_TIME_WAGE_PER_HOUR = 20;  // Wage per hour for full-time employees
+    private static final int PART_TIME_WAGE_PER_HOUR = 15;  // Wage per hour for part-time employees
+    private static final int FULL_TIME_WORK_HOURS = 8;       // Full-time work hours per day
+    private static final int PART_TIME_WORK_HOURS = 4;       // Part-time work hours per day
 
     // Function to calculate daily wage
-    private static int calculateDailyWage(int hoursWorked) {
-        return hoursWorked * WAGE_PER_HOUR;
+    private static int calculateDailyWage(int hoursWorked, boolean isFullTime) {
+        int wagePerHour = isFullTime ? FULL_TIME_WAGE_PER_HOUR : PART_TIME_WAGE_PER_HOUR;
+        return hoursWorked * wagePerHour;
     }
 
     // Function to calculate total weekly wage based on attendance
-    private static int calculateWeeklyWage(boolean[] attendance) {
+    private static int calculateWeeklyWage(boolean[] attendance, boolean isFullTime) {
         int totalWage = 0;
+        int dailyWorkHours = isFullTime ? FULL_TIME_WORK_HOURS : PART_TIME_WORK_HOURS;
         for (boolean present : attendance) {
             if (present) {
-                totalWage += calculateDailyWage(DAILY_WORK_HOURS);
+                totalWage += calculateDailyWage(dailyWorkHours, isFullTime);
             }
         }
         return totalWage;
@@ -40,18 +44,23 @@ public class EmpWageComputation {
             attendance[i] = scanner.nextBoolean();
         }
 
-        // Calculate and display the daily wage for each day
+        // Read employee type
+        System.out.println("Is the employee full-time? (true/false):");
+        boolean isFullTime = scanner.nextBoolean();
+
+        // Display daily wage for each day
         System.out.println("\nDaily Wage Breakdown:");
+        int dailyWorkHours = isFullTime ? FULL_TIME_WORK_HOURS : PART_TIME_WORK_HOURS;
         for (int i = 0; i < attendance.length; i++) {
             if (attendance[i]) {
-                System.out.printf("Day %d: $%d\n", i + 1, calculateDailyWage(DAILY_WORK_HOURS));
+                System.out.printf("Day %d: $%d\n", i + 1, calculateDailyWage(dailyWorkHours, isFullTime));
             } else {
                 System.out.printf("Day %d: Absent\n", i + 1);
             }
         }
 
         // Calculate and display the total weekly wage
-        int weeklyWage = calculateWeeklyWage(attendance);
+        int weeklyWage = calculateWeeklyWage(attendance, isFullTime);
         System.out.println("\nTotal Wage for the week is: $" + weeklyWage);
 
         // Close the scanner
