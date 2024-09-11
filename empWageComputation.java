@@ -1,4 +1,6 @@
 // EmpWageComputation.java
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class EmpWageComputation {
@@ -73,8 +75,8 @@ public class EmpWageComputation {
         int dailyWorkHours = getWorkHours(type);
         int totalWage = 0;
 
-        // Array to store daily wages
-        int[] dailyWages = new int[MAX_WORKING_DAYS];
+        // List to store daily wages and corresponding days
+        List<String> dailyWageDetails = new ArrayList<>();
 
         // Loop to simulate working days until the conditions are met
         for (int day = 1; day <= MAX_WORKING_DAYS; day++) {
@@ -88,7 +90,7 @@ public class EmpWageComputation {
 
             if (isPresent) {
                 int dailyWage = calculateDailyWage(dailyWorkHours, type);
-                dailyWages[totalDaysWorked] = dailyWage;  // Store daily wage
+                dailyWageDetails.add("Day " + day + ": $" + dailyWage); // Store daily wage details
                 totalWage += dailyWage;
                 totalHoursWorked += dailyWorkHours;
                 totalDaysWorked++;
@@ -97,8 +99,8 @@ public class EmpWageComputation {
 
         // Display daily wages and the results
         System.out.println("\nDaily Wage Breakdown:");
-        for (int i = 0; i < totalDaysWorked; i++) {
-            System.out.printf("Day %d: $%d\n", i + 1, dailyWages[i]);
+        for (String detail : dailyWageDetails) {
+            System.out.println(detail);
         }
         System.out.println("\nTotal Wage for the month is: $" + totalWage);
         System.out.println("Total Working Hours: " + totalHoursWorked);
