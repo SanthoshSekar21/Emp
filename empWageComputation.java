@@ -8,6 +8,7 @@ public class EmpWageComputation {
     private static final int PART_TIME_WAGE_PER_HOUR = 15;  // Wage per hour for part-time employees
     private static final int FULL_TIME_WORK_HOURS = 8;       // Full-time work hours per day
     private static final int PART_TIME_WORK_HOURS = 4;       // Part-time work hours per day
+    private static final int WORKING_DAYS_PER_MONTH = 20;    // Number of working days in a month
 
     // Enum for Employee Type
     private enum EmployeeType {
@@ -31,8 +32,8 @@ public class EmpWageComputation {
         return hoursWorked * wagePerHour;
     }
 
-    // Function to calculate total weekly wage based on attendance
-    private static int calculateWeeklyWage(boolean[] attendance, EmployeeType type) {
+    // Function to calculate monthly wage based on attendance
+    private static int calculateMonthlyWage(boolean[] attendance, EmployeeType type) {
         int totalWage = 0;
         int dailyWorkHours;
         switch (type) {
@@ -60,11 +61,11 @@ public class EmpWageComputation {
         // Create a Scanner object for input
         Scanner scanner = new Scanner(System.in);
 
-        // Array to hold attendance status for each day of the week
-        boolean[] attendance = new boolean[7]; // 7 days in a week
-        System.out.println("Enter attendance for each day (true for present, false for absent):");
+        // Array to hold attendance status for each working day of the month
+        boolean[] attendance = new boolean[WORKING_DAYS_PER_MONTH];
+        System.out.println("Enter attendance for each working day (true for present, false for absent):");
 
-        // Read attendance for each day
+        // Read attendance for each working day
         for (int i = 0; i < attendance.length; i++) {
             System.out.printf("Day %d: ", i + 1);
             attendance[i] = scanner.nextBoolean();
@@ -87,7 +88,7 @@ public class EmpWageComputation {
                 return;
         }
 
-        // Display daily wage for each day
+        // Display daily wage for each working day
         System.out.println("\nDaily Wage Breakdown:");
         int dailyWorkHours = (type == EmployeeType.FULL_TIME) ? FULL_TIME_WORK_HOURS : PART_TIME_WORK_HOURS;
         for (int i = 0; i < attendance.length; i++) {
@@ -98,14 +99,11 @@ public class EmpWageComputation {
             }
         }
 
-        // Calculate and display the total weekly wage
-        int weeklyWage = calculateWeeklyWage(attendance, type);
-        System.out.println("\nTotal Wage for the week is: $" + weeklyWage);
+        // Calculate and display the total monthly wage
+        int monthlyWage = calculateMonthlyWage(attendance, type);
+        System.out.println("\nTotal Wage for the month is: $" + monthlyWage);
 
         // Close the scanner
         scanner.close();
     }
 }
-
-
-
